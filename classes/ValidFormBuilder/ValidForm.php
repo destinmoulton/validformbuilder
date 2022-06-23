@@ -1872,7 +1872,7 @@ class ValidForm extends ClassDynamic
         }
 
         $strReturn .= "\tobjForm.initialize();\n";
-        $strReturn .= "\t$(\"#{$this->__name}\").data(\"vf__formElement\", objForm);";
+        $strReturn .= "\tjQuery(\"#{$this->__name}\").data(\"vf__formElement\", objForm);";
         $strReturn .= "};\n";
         $strReturn .= "\n";
         $strReturn .= "try {\n";
