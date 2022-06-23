@@ -121,8 +121,8 @@ ValidForm.prototype.showAlerts = function (objFields) {
     __this.removeAlerts();
 
     try {
-        if ($(objFields).length > 0) {
-            $(objFields).each(function () {
+        if (jQuery(objFields).length > 0) {
+            jQuery(objFields).each(function () {
                 var objFieldError = this;
 
                 for (var fieldName in objFieldError) {
@@ -137,7 +137,7 @@ ValidForm.prototype.showAlerts = function (objFields) {
                 }
             });
 
-            $("#" + __this.id).trigger("VF_ShowAlerts", [{ValidForm: __this, invalidFields: objFields}]);
+            jQuery("#" + __this.id).trigger("VF_ShowAlerts", [{ValidForm: __this, invalidFields: objFields}]);
         }
     } catch (e) {
         try {
@@ -231,10 +231,10 @@ ValidForm.prototype.dynamicDuplication = function () {
     };
 
     //*** Initialise the relationships between clones and original dynamic elements if predefined
-    $("[data-dynamic='original']").each(function () {
-        var $original = $(this);
+    jQuery("[data-dynamic='original']").each(function () {
+        var $original = jQuery(this);
         $original.siblings('[data-dynamic="clone"]').each(function () {
-            var $clone = $(this);
+            var $clone = jQuery(this);
             $clone.data('vf_originalElement', $original);
         });
     });
@@ -246,7 +246,7 @@ ValidForm.prototype.dynamicDuplication = function () {
         event.preventDefault();
 
         // Remove the element
-        var $elementToBeRemoved = $(this).closest('.vf__clone');
+        var $elementToBeRemoved = jQuery(this).closest('.vf__clone');
 
         // Stop execution if this element is disabled
         if ($elementToBeRemoved.hasClass('.vf__disabled')) {
@@ -260,7 +260,7 @@ ValidForm.prototype.dynamicDuplication = function () {
             "VF_BeforeDynamicRemove",
             [{
                 ValidForm: __this,
-                objAnchor: $(this),
+                objAnchor: jQuery(this),
                 objCopy: $elementToBeRemoved,
                 objOriginal: $original,
                 count: null
@@ -283,18 +283,18 @@ ValidForm.prototype.dynamicDuplication = function () {
         } else {
             // Single field
             var originalElementId = $original.find(':input').prop('id');
-            $dynamicCounterFields = $("#" + originalElementId + "_dynamic");
+            $dynamicCounterFields = jQuery("#" + originalElementId + "_dynamic");
         }
 
         // Update counter values
         $dynamicCounterFields.each(function () {
-            var currentValue = $(this).val();
+            var currentValue = jQuery(this).val();
             currentValue = parseInt(currentValue) || 0;
 
             // Lowest possible new value is 0
             var newValue = (currentValue >= 1) ? currentValue - 1 : currentValue;
 
-            $(this).val(newValue);
+            jQuery(this).val(newValue);
         });
 
         // Remove dom element
@@ -303,21 +303,21 @@ ValidForm.prototype.dynamicDuplication = function () {
         var $siblings = $original.siblings('.vf__clone');
         var siblingCounter = 1;
         $siblings.each(function () {
-            var currentCount = $(this).prop('id').split('_').pop();
-            var siblingId = $(this).prop('id');
+            var currentCount = jQuery(this).prop('id').split('_').pop();
+            var siblingId = jQuery(this).prop('id');
             if (siblingId !== '') {
-                $(this).prop('id', $original.prop('id') + '_' + siblingCounter);
+                jQuery(this).prop('id', $original.prop('id') + '_' + siblingCounter);
             }
 
-            $(this).find('*').each(function () {
-                var elementId = $(this).prop('id');
-                var elementName = $(this).prop('name');
+            jQuery(this).find('*').each(function () {
+                var elementId = jQuery(this).prop('id');
+                var elementName = jQuery(this).prop('name');
 
                 //*** Update element 'id' property
                 if (elementId !== '' && typeof elementId !== 'undefined') {
                     var baseElementId = getIdWithoutIndex(elementId);
 
-                    $(this).prop('id', baseElementId + '_' + siblingCounter);
+                    jQuery(this).prop('id', baseElementId + '_' + siblingCounter);
                 }
 
                 //*** Update element 'name' property
@@ -326,15 +326,15 @@ ValidForm.prototype.dynamicDuplication = function () {
                     var baseElementName = getIdWithoutIndex(elementName);
                     var suffix = hasBrackets ? '[]' : '';
 
-                    $(this).prop('name', baseElementName + '_' + siblingCounter + suffix);
+                    jQuery(this).prop('name', baseElementName + '_' + siblingCounter + suffix);
                 }
 
                 //*** Update label 'for' property
-                var forLabel = $(this).prop('for');
+                var forLabel = jQuery(this).prop('for');
                 if (typeof forLabel !== 'undefined') {
                     var baseForLabel = getIdWithoutIndex(forLabel);
 
-                    $(this).prop('for', baseForLabel + '_' + siblingCounter);
+                    jQuery(this).prop('for', baseForLabel + '_' + siblingCounter);
                 }
             });
 
@@ -346,7 +346,7 @@ ValidForm.prototype.dynamicDuplication = function () {
             "VF_AfterDynamicRemove",
             [{
                 ValidForm: __this,
-                objAnchor: $(this),
+                objAnchor: jQuery(this),
                 objCopy: null,
                 objOriginal:
                 $original,
@@ -367,7 +367,7 @@ ValidForm.prototype.dynamicDuplication = function () {
             "VF_AfterDynamicChange",
             [{
                 ValidForm: __this,
-                objAnchor: $(this),
+                objAnchor: jQuery(this),
                 objCopy: null,
                 objOriginal: $original,
                 count: null
@@ -455,7 +455,7 @@ ValidForm.prototype.dynamicDuplication = function () {
                 }                
 
                 //*** Set counter variable on current counter object
-                counter = $("#" + fieldname + "_dynamic");
+                counter = jQuery("#" + fieldname + "_dynamic");
 
                 //*** Set value to number '0' if value is NaN
                 var counterValue = parseInt(counter.val());
@@ -509,7 +509,7 @@ ValidForm.prototype.dynamicDuplication = function () {
                         }
 
                         // Find wrapping label
-                        var $label = $('label[for="' + $field.prop('id') + '"]', copy);
+                        var $label = jQuery('label[for="' + $field.prop('id') + '"]', copy);
 
                         //*** Radio buttons and checkboxes have to be treated differently.
                         var fieldId;
@@ -581,7 +581,7 @@ ValidForm.prototype.dynamicDuplication = function () {
                 copy.find(".vf__multifield").each(function(){
                     var fieldId = jQuery(this).attr("id");
                     if (counter.val() > 1) {
-                        fieldId = getIdWithoutIndex($(this).prop('id'));
+                        fieldId = getIdWithoutIndex(jQuery(this).prop('id'));
                     }
 
                     jQuery(this).attr("id", fieldId + "_" + counter.val());
@@ -797,14 +797,14 @@ ValidForm.prototype.attachAreaEvents = function(objActiveTrigger) {
                                 if (typeof condition.comparisons[j] !== "undefined") {
                                     var subject = condition.comparisons[j].subject;
                                     if (subject) {
-                                        $("[name='" + subject.name + "']").triggerHandler("change");
+                                        jQuery("[name='" + subject.name + "']").triggerHandler("change");
                                     }
                                 }
                             }
                         }
                     }
 
-                    $("#" + __this.id).trigger("VF_EnableActiveArea", [{ValidForm: __this, objArea: currentFieldset}]);
+                    jQuery("#" + __this.id).trigger("VF_EnableActiveArea", [{ValidForm: __this, objArea: currentFieldset}]);
                 } else {
                     // Disable active area & remove error's
                     inputNames = [];
@@ -812,7 +812,7 @@ ValidForm.prototype.attachAreaEvents = function(objActiveTrigger) {
                     jQuery("div > input, select, textarea", currentFieldset)
                         .attr("disabled", "disabled")
                         .each(function () {
-                            inputNames.push($(this).attr("name"));
+                            inputNames.push(jQuery(this).attr("name"));
                         });
 
                     jQuery(".vf__dynamic a", currentFieldset).addClass("vf__disabled");
@@ -820,7 +820,7 @@ ValidForm.prototype.attachAreaEvents = function(objActiveTrigger) {
                     jQuery(currentFieldset).addClass("vf__disabled");
 
                     // Get the dynamic trigger, if available
-                    $dynamicTrigger = $("[data-target-id='" + inputNames.join("|") + "']");
+                    $dynamicTrigger = jQuery("[data-target-id='" + inputNames.join("|") + "']");
                     if ($dynamicTrigger.length > 0) {
                         $dynamicTrigger.hide();
 
@@ -833,7 +833,7 @@ ValidForm.prototype.attachAreaEvents = function(objActiveTrigger) {
                         jQuery(this).removeClass("vf__error").find("p.vf__error").remove();
                     });
 
-                    $("#" + __this.id).trigger("VF_DisableActiveArea", [{ValidForm: __this, objArea: currentFieldset}]);
+                    jQuery("#" + __this.id).trigger("VF_DisableActiveArea", [{ValidForm: __this, objArea: currentFieldset}]);
                 }
             } else {
                 // Disable active area & remove error's
@@ -842,7 +842,7 @@ ValidForm.prototype.attachAreaEvents = function(objActiveTrigger) {
                 jQuery("div > input, select, textarea", fieldset)
                     .attr("disabled", "disabled")
                     .each(function () {
-                        inputNames.push($(this).attr("name"));
+                        inputNames.push(jQuery(this).attr("name"));
                     });
 
                 jQuery(".vf__dynamic a", fieldset).addClass("vf__disabled");
@@ -850,7 +850,7 @@ ValidForm.prototype.attachAreaEvents = function(objActiveTrigger) {
                 jQuery(fieldset).addClass("vf__disabled");
 
                 // Get the dynamic trigger, if available
-                $dynamicTrigger = $("[data-target-id='" + inputNames.join("|") + "']");
+                $dynamicTrigger = jQuery("[data-target-id='" + inputNames.join("|") + "']");
                 if ($dynamicTrigger.length > 0) {
                     $dynamicTrigger.hide();
 
@@ -863,7 +863,7 @@ ValidForm.prototype.attachAreaEvents = function(objActiveTrigger) {
                     jQuery(this).removeClass("vf__error").find("p.vf__error").remove();
                 });
 
-                $("#" + __this.id).trigger("VF_DisableActiveArea", [{ValidForm: __this, objArea: fieldset}]);
+                jQuery("#" + __this.id).trigger("VF_DisableActiveArea", [{ValidForm: __this, objArea: fieldset}]);
             }
         });
     });
@@ -989,7 +989,7 @@ ValidForm.prototype.addElement = function() {
     }
 
     // Store the element in a data property in the DOM element.
-    $("[name='" + strElementName + "']", "#" + this.id).data("vf__field", objAddedElement);
+    jQuery("[name='" + strElementName + "']", "#" + this.id).data("vf__field", objAddedElement);
 
     return objAddedElement;
 };
@@ -1140,7 +1140,7 @@ function ValidFormComparison (objForm, subject, comparison, value) {
 ValidFormComparison.prototype._init = function () {
     try {
         var self = this,
-        $objSubject = (this.subject instanceof jQuery) ? this.subject : $("[name='" + this.subject.name + "']");
+        $objSubject = (this.subject instanceof jQuery) ? this.subject : jQuery("[name='" + this.subject.name + "']");
 
         //*** Set event listeners. Trigger 'change' event
         if ($objSubject.is("input") || $objSubject.is("textarea")) {
@@ -1148,7 +1148,7 @@ ValidFormComparison.prototype._init = function () {
 
                 var delay = null;
                 $objSubject.on("keyup", function () {
-                    var $self = $(this);
+                    var $self = jQuery(this);
 
                     clearTimeout(delay);
                     delay = setTimeout(function () {
@@ -1186,7 +1186,7 @@ ValidFormComparison.prototype._setSubject = function (objForm, strSubject) {
         if (varReturn === null) {
             // Element not found in ValidForm internal collection,
             // this is probably a fieldset, area or paragraph element.
-            varReturn = $("#" + strSubject);
+            varReturn = jQuery("#" + strSubject);
 
             if (varReturn.length <= 0) {
                 varReturn = null; // Reset subject
@@ -1366,7 +1366,7 @@ ValidFormCondition.prototype._setSubject = function (strSubject) {
         if (varReturn === null) {
             // Element not found in ValidForm internal collection,
             // this is probably a fieldset, area or paragraph element.
-            varReturn = $("#" + strSubject);
+            varReturn = jQuery("#" + strSubject);
 
             if (varReturn.length <= 0) {
                 throw new Error("Could not find subject element with id or name '" + strSubject + "'.", 1);
@@ -1385,7 +1385,7 @@ ValidFormCondition.prototype.set = function (blnResult) {
     //*** Utility functions
     var Util = {
         "visible": function (blnValue) {
-            var $objSubject = (self.subject instanceof jQuery) ? self.subject : $("[name='" + self.subject.name + "']");
+            var $objSubject = (self.subject instanceof jQuery) ? self.subject : jQuery("[name='" + self.subject.name + "']");
             var $objBase = $objSubject;
 
             if (blnValue) {
@@ -1439,7 +1439,7 @@ ValidFormCondition.prototype.set = function (blnResult) {
                 Util.required(false);
             }
 
-            $("#" + self.validform.id).trigger("VF_ConditionSet", [{"condition": "visible", "value": blnValue, "subject": self.subject}]);
+            jQuery("#" + self.validform.id).trigger("VF_ConditionSet", [{"condition": "visible", "value": blnValue, "subject": self.subject}]);
         },
 
         "enabled": function (blnValue, blnDefaultState) {
@@ -1451,8 +1451,8 @@ ValidFormCondition.prototype.set = function (blnResult) {
                 self.subject.setEnabled(blnValue);
             } else {
                 // Iterate over sub elements
-                $("input, textarea, select", self.subject).each(function () {
-                    var objElement = self.validform.getElement($(this).attr("name"));
+                jQuery("input, textarea, select", self.subject).each(function () {
+                    var objElement = self.validform.getElement(jQuery(this).attr("name"));
 
                     if (objElement !== null) {
                         blnValue = (blnDefaultState) ? objElement.getEnabled(true) : blnValue;
@@ -1461,7 +1461,7 @@ ValidFormCondition.prototype.set = function (blnResult) {
                 });
             }
 
-            $("#" + self.validform.id).trigger("VF_ConditionSet", [{"condition": "enabled", "value": blnValue, "subject": self.subject}]);
+            jQuery("#" + self.validform.id).trigger("VF_ConditionSet", [{"condition": "enabled", "value": blnValue, "subject": self.subject}]);
         },
 
         "required": function (blnValue, blnDefaultState) {
@@ -1473,8 +1473,8 @@ ValidFormCondition.prototype.set = function (blnResult) {
                 self.subject.setRequired(blnValue);
             } else {
                 // Iterate over sub elements
-                $("input, textarea, select", self.subject).each(function () {
-                    var objElement = self.validform.getElement($(this).attr("name"));
+                jQuery("input, textarea, select", self.subject).each(function () {
+                    var objElement = self.validform.getElement(jQuery(this).attr("name"));
 
                     if (objElement !== null) {
                         blnValue = (blnDefaultState) ? objElement.getRequired(true) : blnValue;
@@ -1484,7 +1484,7 @@ ValidFormCondition.prototype.set = function (blnResult) {
 
             }
 
-            $("#" + self.validform.id).trigger("VF_ConditionSet", [{"condition": "required", "value": blnValue, "subject": self.subject}]);
+            jQuery("#" + self.validform.id).trigger("VF_ConditionSet", [{"condition": "required", "value": blnValue, "subject": self.subject}]);
         }
     };
 
@@ -1573,7 +1573,7 @@ function ValidFormElement(strFormId, formObject, strElementName, strElementId, s
     this.formObject             = formObject;
     this.id                     = strElementId;
     this.name                   = strElementName;
-    this.disabled               = ($("#" + strElementId).attr("disabled") === "disabled");
+    this.disabled               = (jQuery("#" + strElementId).attr("disabled") === "disabled");
     this.validator              = new ValidFormFieldValidator(strElementId, strElementName);
     this.validator.check        = strValidation;
     this.validator.required     = false;
@@ -1669,11 +1669,11 @@ ValidFormElement.prototype.getHintValue = function () {
 };
 
 ValidFormElement.prototype.getValue = function () {
-    return $("#" + this.id).val();
+    return jQuery("#" + this.id).val();
 };
 
 ValidFormElement.prototype.setValue = function (value, $element) {
-    $element = $element || $("#" + this.id);
+    $element = $element || jQuery("#" + this.id);
 
     if ($element.is("select")) {
         $element
@@ -1684,7 +1684,7 @@ ValidFormElement.prototype.setValue = function (value, $element) {
             .attr('selected', 'selected');
     } else {
         // input || textarea
-        $("#" + this.id).val(value);
+        jQuery("#" + this.id).val(value);
     }
 };
 
@@ -1734,7 +1734,7 @@ ValidFormElement.prototype.setRequired = function (blnValue) {
         this.validator.removeAlert();
     }
 
-    var $element = $("[name='" + this.name + "']");
+    var $element = jQuery("[name='" + this.name + "']");
 
     var $parent = $element.closest("div.vf__optional, div.vf__required");
     if (blnValue) {
@@ -1746,7 +1746,7 @@ ValidFormElement.prototype.setRequired = function (blnValue) {
     }
 
     $parent.find("input, select").each(function () {
-        var field = $(this).data("vf__field");
+        var field = jQuery(this).data("vf__field");
 
         if (typeof field !== "undefined") {
             if (field.validator.required) {
@@ -1763,7 +1763,7 @@ ValidFormElement.prototype.getRequired = function (blnDefaultState) {
 ValidFormElement.prototype.setEnabled = function (blnValue) {
     this.disabled = !blnValue;
 
-    var $element = $("[name='" + this.name + "']");
+    var $element = jQuery("[name='" + this.name + "']");
     var $parent = $element.closest("div.vf__optional, div.vf__required, div.vf__multifielditem");
 
     /**
@@ -1798,7 +1798,7 @@ ValidFormElement.prototype.getEnabled = function (blnDefaultState) {
 ValidFormElement.prototype.getDynamicCount = function () {
     var self        = this
     ,   varReturn   = 0
-    ,   $counter    = $("input[name='" + self.name + "_dynamic']", $("#" + self.formId)); // jQuery performs better when scoped correctly
+    ,   $counter    = jQuery("input[name='" + self.name + "_dynamic']", jQuery("#" + self.formId)); // jQuery performs better when scoped correctly
 
     if ($counter.length > 0) {
         varReturn = parseInt($counter.val());
@@ -1912,9 +1912,9 @@ function ValidFormFieldValidator(strElementId, strElementName) {
      * Element's disabled status
      * @type {Boolean}
      */
-    this.disabled             = ($("#" + strElementId).attr("disabled") === "disabled");
+    this.disabled             = (jQuery("#" + strElementId).attr("disabled") === "disabled");
 
-    this.defaultValue = $("#" + strElementId).val();
+    this.defaultValue = jQuery("#" + strElementId).val();
 
     this.check              = null;
     /**
@@ -2176,7 +2176,7 @@ ValidFormFieldValidator.prototype.showAlert = function(strAlert) {
         objElement.closest("div.vf__optional, div.vf__required").addClass("vf__error").prepend("<p class=\"vf__error\">" + strAlert + "</p>");
     }
 
-    $("#" + this.id).trigger("VF_ShowAlert", [{FormFieldValidator: this, errorMsg: strAlert}]);
+    jQuery("#" + this.id).trigger("VF_ShowAlert", [{FormFieldValidator: this, errorMsg: strAlert}]);
 };
 
 /**
@@ -2185,7 +2185,7 @@ ValidFormFieldValidator.prototype.showAlert = function(strAlert) {
  * @author Ariel Flesler
  * @version 1.4.3.1
  */
-;(function($){var h=$.scrollTo=function(a,b,c){$(window).scrollTo(a,b,c);};h.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:true};h.window=function(a){return $(window)._scrollable();};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement;});};$.fn.scrollTo=function(e,f,g){if(typeof f=='object'){g=f;f=0;}if(typeof g=='function')g={onAfter:g};if(e=='max')e=9e9;g=$.extend({},h.defaults,g);f=f||g.duration;g.queue=g.queue&&g.axis.length>1;if(g.queue)f/=2;g.offset=both(g.offset);g.over=both(g.over);return this._scrollable().each(function(){if(e===null)return;var d=this,$elem=$(d),targ=e,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break;}targ=$(targ,this);if(!targ.length)return;break;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset();}$.each(g.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=h.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(g.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0;}attr[key]+=g.offset[pos]||0;if(g.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*g.over[pos];}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c;}if(g.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&g.queue){if(old!=attr[key])animate(g.onAfterFirst);delete attr[key];}});animate(g.onAfter);function animate(a){$elem.animate(attr,f,g.easing,a&&function(){a.call(this,e,g);});}}).end();};h.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d]);};function both(a){return typeof a=='object'?a:{top:a,left:a};}})(jQuery);
+;(function($){var h=$.scrollTo=function(a,b,c){jQuery(window).scrollTo(a,b,c);};h.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:true};h.window=function(a){return jQuery(window)._scrollable();};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement;});};$.fn.scrollTo=function(e,f,g){if(typeof f=='object'){g=f;f=0;}if(typeof g=='function')g={onAfter:g};if(e=='max')e=9e9;g=$.extend({},h.defaults,g);f=f||g.duration;g.queue=g.queue&&g.axis.length>1;if(g.queue)f/=2;g.offset=both(g.offset);g.over=both(g.over);return this._scrollable().each(function(){if(e===null)return;var d=this,$elem=jQuery(d),targ=e,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break;}targ=jQuery(targ,this);if(!targ.length)return;break;case'object':if(targ.is||targ.style)toff=(targ=jQuery(targ)).offset();}$.each(g.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=h.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(g.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0;}attr[key]+=g.offset[pos]||0;if(g.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*g.over[pos];}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c;}if(g.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&g.queue){if(old!=attr[key])animate(g.onAfterFirst);delete attr[key];}});animate(g.onAfter);function animate(a){$elem.animate(attr,f,g.easing,a&&function(){a.call(this,e,g);});}}).end();};h.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!jQuery(a).is('html,body'))return a[scroll]-jQuery(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d]);};function both(a){return typeof a=='object'?a:{top:a,left:a};}})(jQuery);
 
 /**
  * sprintf() for JavaScript 0.7-beta1
